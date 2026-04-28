@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TripSplit 🌴
 
 > **Travel together. Split smarter.** A mobile-first PWA that makes travel expense splitting feel magical with 4 AI-powered moments.
@@ -133,3 +134,4 @@ Frontend: tested manually on mobile viewport (430px).
 ---
 
 *Built as an internship capstone project in a 10-day sprint. Powered by Emergent.*
+
