@@ -1,0 +1,41 @@
+{
+  "summary": "TripSplit backend — first iteration. Ran 28 pytest cases covering auth (login/register/OTP/me/patch/brute-force), countries, FX, trips, members, expenses (incl. cross-currency USD→INR), settlement (minimal-txn algorithm correctness), authorization (non-member 403, non-owner 403), and all 4 AI endpoints (categorize, smart-notify, budget-estimate, fun-facts + cache). 28/28 passed (100%).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/auth/login", "issue": "Returns 422 (Pydantic EmailStr) instead of 401 when email format is invalid — not strictly a bug but inconsistent with 'Invalid email or password'. Not user-facing if frontend validates."},
+      {"endpoint": "POST /api/auth/register", "issue": "Pydantic EmailStr rejects special-use TLDs like '.test' / '.local'. Fine for prod, but worth noting if any test fixtures use them."},
+      {"endpoint": "GET /api/trips", "issue": "Per-trip totals computed via N+1 queries (loop over trips → expenses.find each). Functional but inefficient at scale."},
+      {"endpoint": "POST /api/trips/{trip_id}/settle", "issue": "Records settlement as a regular expense with split_among=[to_user] which treats the recipient as bearing 100% of the share. This is intentional accounting trick but caller should know — total_spent will include settlements."},
+      {"endpoint": "POST /api/auth/otp", "issue": "Phone normalization is only strip()/replace; '+91 99999' and '+9199999' map to the same pseudo_email which is correct, but '9199999' (no +) maps to a different user. Minor."}
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "(Optional) Use a single aggregation pipeline in GET /api/trips instead of N+1 expense queries.",
+    "(Optional) Document that settlement records are stored as expenses in /api/trips/{id}/settle response shape.",
+    "All core flows verified — no blocking action items."
+  ],
+  "critical_code_review_comments": [
+    "convert_currency silently returns the unconverted amount when a currency code is missing from USD_RATES. This could mask data bugs; should raise or log.",
+    "AI fallback heuristics are good safety nets and behave correctly for tested inputs (Swiggy → Food).",
+    "JWT secret is a 64-char hex literal — fine for prototype.",
+    "CORS allow_origins=['*'] with allow_credentials=True is technically invalid per CORS spec — browsers will reject credentialed requests with wildcard. Currently auth uses Bearer token via header so it works, but if Google session cookie path is exercised cross-origin, this will fail. Recommend explicit origin list including the preview frontend URL.",
+    "settle endpoint doesn't validate from_user/to_user exist in the trip — could record garbage settlements.",
+    "delete_expense does not verify the expense belongs to the trip's existing expenses (404 not returned if expense_id is wrong)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py"
+  ],
+  "success_rate": {"backend": "100% (28/28)", "frontend": "not tested"},
+  "test_credentials": "demo@tripsplit.app / Demo@123 (works); OTP 123456 with any phone (works).",
+  "seed_data_creation": "Several TEST_ users and one 'TEST Goa' trip were created during the test run. They live under demo user's account in MongoDB. Cleanup not strictly required since they are clearly prefixed.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend is fully green. All 28 pytest cases pass including settlement minimization (verified sums-of-txns equal balances) and cross-currency conversion (100 USD ≈ 8450 INR). AI endpoints respond from Gemini 3 Flash within ~3-8s and are cached for fun-facts. The only intentional pydantic EmailStr quirk is that '.test' / '.local' TLDs are rejected — use '.example.com' for synthetic emails. Frontend testing is the next priority if requested.",
+  "rca of the issue": "Initial 6 failures were all caused by Pydantic EmailStr rejecting `*.test` TLD (RFC 2606 special-use). Fixed by switching test domain to `tripsplit.example.com`. No backend code change required."
+}

@@ -1,0 +1,122 @@
+{
+  "theme": "Light",
+  "archetype": "1 (Organic & Earthy)",
+  "design_context": "Mobile Web App (PWA) focusing on Finance & Travel",
+  "typography": {
+    "font_family_headings": "Cabinet Grotesk",
+    "font_family_body": "Manrope",
+    "hierarchy": {
+      "H1": "text-4xl sm:text-5xl tracking-tighter font-bold",
+      "H2": "text-2xl sm:text-3xl tracking-tight font-semibold",
+      "H3": "text-xl font-medium",
+      "body": "text-base leading-relaxed",
+      "small_labels": "text-sm tracking-wide uppercase font-semibold",
+      "numbers": "tabular-nums"
+    },
+    "pairing_rules": "Use Cabinet Grotesk for high-impact numbers (totals, balances) and headings. Use Manrope for all transaction lists, labels, and body copy to ensure maximum legibility at small mobile sizes."
+  },
+  "colors": {
+    "background": {
+      "app": "#F9F8F6",
+      "surface": "#FFFFFF",
+      "surface_elevated": "#F2F0EA"
+    },
+    "text": {
+      "primary": "#1A1A1A",
+      "secondary": "#737373",
+      "tertiary": "#A3A3A3",
+      "inverse": "#FFFFFF"
+    },
+    "brand": {
+      "primary": "#1A3626",
+      "primary_hover": "#254D36",
+      "secondary": "#D85C40",
+      "secondary_hover": "#E56B50"
+    },
+    "ai_magic": {
+      "base": "#C29329",
+      "light": "#FDF7E7",
+      "gradient": "bg-gradient-to-r from-[#C29329] via-[#D85C40] to-[#C29329]"
+    },
+    "semantic": {
+      "success": "#2D6A4F",
+      "warning": "#E9C46A",
+      "error": "#E63946"
+    },
+    "pie_chart_palette": [
+      "#1A3626", 
+      "#D85C40", 
+      "#C29329", 
+      "#4A6273", 
+      "#89A78B", 
+      "#E3B992", 
+      "#B87A71", 
+      "#3B4C30"
+    ]
+  },
+  "spacing_and_layout": {
+    "mobile_container": "max-w-md mx-auto relative min-h-[100dvh] bg-[#F9F8F6] shadow-2xl overflow-x-hidden pb-24",
+    "tap_targets": "min-h-[48px] min-w-[48px]",
+    "padding": {
+      "screen_edge": "px-4 sm:px-6",
+      "section_gap": "gap-8",
+      "item_gap": "gap-4"
+    },
+    "border_radius": {
+      "cards": "rounded-2xl",
+      "buttons": "rounded-full",
+      "bottom_sheet": "rounded-t-3xl",
+      "chips": "rounded-full"
+    }
+  },
+  "components": {
+    "bottom_navigation": {
+      "style": "fixed bottom-0 left-0 right-0 max-w-md mx-auto pb-safe pt-2 px-6 flex justify-between items-center backdrop-blur-xl bg-white/90 border-t border-black/5 z-50",
+      "fab": "absolute -top-6 left-1/2 -translate-x-1/2 w-14 h-14 bg-[#1A3626] rounded-full shadow-lg flex items-center justify-center text-white active:scale-95 transition-transform"
+    },
+    "bottom_sheet": {
+      "style": "fixed inset-x-0 bottom-0 max-w-md mx-auto bg-white rounded-t-3xl shadow-[0_-8px_32px_rgba(0,0,0,0.1)] z-50 transform transition-transform",
+      "handle": "w-12 h-1.5 bg-gray-200 rounded-full mx-auto mt-3 mb-5"
+    },
+    "cards": {
+      "default": "bg-white rounded-2xl p-4 shadow-sm border border-black/5",
+      "ai_insight": "bg-[#FDF7E7] rounded-2xl p-4 border border-[#C29329]/20 relative overflow-hidden"
+    },
+    "currency_pill": {
+      "style": "inline-flex items-center px-2 py-1 bg-gray-100 text-gray-700 text-xs font-semibold rounded-full tracking-wide"
+    }
+  },
+  "motion_and_microinteractions": {
+    "page_transition": {
+      "initial": "{ opacity: 0, y: 20 }",
+      "animate": "{ opacity: 1, y: 0 }",
+      "transition": "{ type: 'spring', stiffness: 260, damping: 20 }"
+    },
+    "tap_feedback": "active:scale-[0.97] transition-transform duration-100",
+    "ai_shimmer": "animate-pulse background-size-[200%_auto]",
+    "typing_effect": "staggered reveal using framer-motion for auto-tagger text"
+  },
+  "ai_magic_features": {
+    "smart_payment_toast": "Native-style toast notification sliding from top. Uses ai_magic.light background with a subtle ai_magic.gradient top border. Includes a distinct 'Sparkle' icon.",
+    "budget_estimator": "Card with animated progress bars filling up on load, representing different categories. Use the pie_chart_palette for category bars.",
+    "auto_category_tagger": "A small chip that pops up next to the amount input while typing, using a scale-in animation and a subtle glow.",
+    "fun_facts_feed": "Horizontal scrollable list (Snap scrolling) of cards. Soft parallax effect on background images if used."
+  },
+  "media": {
+    "trip_covers": {
+      "goa": "https://images.unsplash.com/photo-1685271555713-f9bf8d6c3721?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODF8MHwxfHNlYXJjaHwyfHxnb2ElMjBiZWFjaCUyMHN1bnNldCUyMHRyYXZlbHxlbnwwfHx8fDE3NzcyNzExMjB8MA&ixlib=rb-4.1.0&q=85",
+      "manali": "https://images.pexels.com/photos/28680808/pexels-photo-28680808.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "bali": "https://images.unsplash.com/photo-1709140624408-0a63fb49a0d1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODR8MHwxfHNlYXJjaHwzfHxiYWxpJTIwdHJvcGljYWwlMjB0cmF2ZWwlMjBsdXh1cnl8ZW58MHx8fHwxNzc3MjcxMTIwfDA&ixlib=rb-4.1.0&q=85"
+    }
+  },
+  "icons_library": "lucide-react",
+  "instructions_to_main_agent": [
+    "Ensure the app feels like a native mobile app. Use a max-w-md container centered on desktop with a subtle device frame or shadow, simulating a mobile viewport.",
+    "Use framer-motion for route transitions, bottom sheet sliding, and AI magical reveals.",
+    "For the Recharts pie chart, enforce a 0 margin and use the pie_chart_palette provided. Ensure the chart is highly readable on small screens.",
+    "Implement the 'Simulate UPI Payment' as a floating toast or bottom sheet that prompts the user to add the expense automatically.",
+    "Do NOT use Inter or Space Grotesk. Add Google Fonts links for 'Cabinet Grotesk' (or equivalent strong display sans like 'Outfit' if Cabinet is unavailable via standard CDNs) and 'Manrope'.",
+    "Ensure all interactive elements have data-testid attributes for testing.",
+    "For multi-currency, visually prioritize the trip's local currency in large text, and show the converted home currency in a smaller currency_pill."
+  ]
+}

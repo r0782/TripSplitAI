@@ -1,0 +1,40 @@
+{
+  "summary": "Iteration 2 backend testing: 27 new tests added for Invite Links + Trip Docs (GridFS), all passed. 28 iteration-1 regression tests re-run, all still pass. Combined 55/55 = 100% backend success.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_invite_and_docs.py",
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/iter2_full.xml",
+    "/app/test_reports/pytest/iter2_invite_docs.xml"
+  ],
+  "action_items": [
+    "Optional: TripCreateBody currently only accepts member_names (list of strings). To enable email-stub invites end-to-end via API (so a user can be added by email and later attach themselves via accept-invite), extend TripCreateBody to accept a list of {name, email} member objects. The backend accept_invite logic already supports the attach-by-email branch correctly — verified via direct Mongo seeding."
+  ],
+  "critical_code_review_comments": [
+    "server.py is 1078 lines — consider splitting into routers/auth.py, routers/trips.py, routers/invite.py, routers/docs.py, routers/ai.py for maintainability (>700 line guideline).",
+    "In download_doc (server.py:867), ObjectId(meta['gridfs_id']) is wrapped in try/except returning 404. Bson InvalidId would also map to 'File missing in storage' which is misleading — could differentiate 'corrupted metadata' vs 'storage missing'. Minor.",
+    "GridFS bucket name not asserted in tests; relies on review_request statement ('trip_docs'). Functional correctness validated end-to-end via upload→download bytes match and delete→download 404 cycle.",
+    "accept_invite returns full member object only on 'joined'; on 'already_member' it does not echo the (possibly updated) member. Acceptable but could improve client UX by returning the resolved member doc."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_invite_and_docs.py (new)"
+  ],
+  "success_rate": {
+    "backend": "100% (55/55 tests passing — 28 regression + 27 new)",
+    "frontend": "not tested (backend-only request)"
+  },
+  "test_credentials": "demo@tripsplit.app / Demo@123 (verified working). New test users created on the fly via /api/auth/register with unique emails per test (TEST_*).",
+  "seed_data_creation": "Tests create per-module trips and per-test users with unique emails (uuid-based). One test seeds an email-only stub member directly via pymongo (cannot be done via current TripCreate API).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iteration 2 added 27 tests in /app/backend/tests/test_invite_and_docs.py covering: invite get/rotate/preview/accept (incl. idempotency, email-stub attach, rotation invalidates old token), docs upload (PDF/PNG, type & size & empty validation), list/download (Bearer + ?token= query for img/iframe), permissions (non-member 403, owner+uploader can delete, other members 403), and GridFS cleanup (delete -> list & download both 404). All 55 tests run in ~24s. Server runs on supervisor, accessed via REACT_APP_BACKEND_URL. To run: pytest /app/backend/tests/ -v. The test_accept_attaches_user_id_to_email_stub test seeds the stub directly into Mongo because the TripCreate API doesn't yet accept email-only members.",
+  "rca of the issue": "N/A — no failures after final run."
+}
